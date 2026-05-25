@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Data Pesanan</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+background:#fff5f7;
+font-family:Arial;
+}
+
+.section-title{
+color:#ff4d6d;
+font-weight:bold;
+}
+
+.card{
+border:none;
+border-radius:20px;
+}
+
+table{
+background:white;
+border-radius:20px;
+overflow:hidden;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+<h2 class="text-center section-title mb-4">
+
+Data Pesanan
+
+</h2>
+
+<marquee class="bg-danger text-white p-2 rounded mb-4">
+
+Jumlah Antrian Diproses :
+<span id="jumlahAntrian">0</span>
+
+</marquee>
+
+<div class="card p-4 shadow">
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-danger">
+
+<tr>
+
+<th>Nama</th>
+<th>Menu</th>
+<th>Jumlah</th>
+<th>Status</th>
+<th>Countdown</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tbody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+let dataPesanan =
+JSON.parse(localStorage.getItem("pesanan")) || [];
+
+function tampilData(){
+
+    let isi = "";
+
+    let antrian = 0;
+
+    dataPesanan.forEach((item)=>{
+
+        if(item.status == "Diproses"){
+            antrian++;
+        }
+
+        let menit =
+        Math.floor(item.waktu / 60);
+
+        let detik =
+        item.waktu % 60;
+
+        isi += `
+        <tr>
+
+        <td>${item.nama}</td>
+
+        <td>${item.menu}</td>
+
+        <td>${item.jumlah}</td>
+
+        <td>
+
+        ${
+            item.status == "Diproses"
+            ?
+            '<span class="badge bg-warning">Diproses</span>'
+            :
+            '<span class="badge bg-success">Selesai</span>'
+        }
+
+        </td>
+
+        <td>
+
+        ${menit}:${detik < 10 ? "0"+detik : detik}
+
+        </td>
+
+        </tr>
+        `;
+    });
+
+    $("#tbody").html(isi);
+
+    $("#jumlahAntrian").text(antrian);
+
+    localStorage.setItem(
+    "pesanan",
+    JSON.stringify(dataPesanan)
+    );
+
+}
+
+setInterval(function(){
+
+    dataPesanan.forEach((item)=>{
+
+        if(item.waktu > 0){
+
+            item.waktu--;
+
+        }
+        else{
+
+            item.status = "Selesai";
+
+        }
+
+    });
+
+    tampilData();
+
+},1000);
+
+tampilData();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
