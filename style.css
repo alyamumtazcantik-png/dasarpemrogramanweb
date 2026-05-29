@@ -107,5 +107,36 @@ body{
     text-align:center;
 }
 
+.sidebar-menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    width:150px;
+}
 
+.menu-btn{
+    background:#ff4d6d;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:12px;
+    font-weight:bold;
+    text-align:center;
+    transition:0.3s;
+}
+
+.menu-btn:hover{
+    background:#e63956;
+    color:white;
+}
+
+.main-layout{
+    display:flex;
+    gap:30px;
+    align-items:flex-start;
+    padding-top:120px;
+}
+
+.main-content{
+    flex:1;
 }
